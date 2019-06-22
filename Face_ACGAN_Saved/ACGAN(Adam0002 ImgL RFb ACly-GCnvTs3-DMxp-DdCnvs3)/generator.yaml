@@ -1,0 +1,212 @@
+backend: tensorflow
+class_name: Model
+config:
+  input_layers:
+  - [input_2, 0, 0]
+  - [input_3, 0, 0]
+  layers:
+  - class_name: InputLayer
+    config:
+      batch_input_shape: !!python/tuple [null, 1]
+      dtype: int32
+      name: input_3
+      sparse: false
+    inbound_nodes: []
+    name: input_3
+  - class_name: Embedding
+    config:
+      activity_regularizer: null
+      batch_input_shape: !!python/tuple [null, null]
+      dtype: float32
+      embeddings_constraint: null
+      embeddings_initializer:
+        class_name: RandomUniform
+        config: {dtype: float32, maxval: null, minval: 0, seed: null}
+      embeddings_regularizer: null
+      input_dim: 2
+      input_length: null
+      mask_zero: false
+      name: embedding
+      output_dim: 100
+      trainable: true
+    inbound_nodes:
+    - - - input_3
+        - 0
+        - 0
+        - {}
+    name: embedding
+  - class_name: InputLayer
+    config:
+      batch_input_shape: !!python/tuple [null, 100]
+      dtype: float32
+      name: input_2
+      sparse: false
+    inbound_nodes: []
+    name: input_2
+  - class_name: Flatten
+    config: {data_format: channels_last, dtype: float32, name: flatten_1, trainable: true}
+    inbound_nodes:
+    - - - embedding
+        - 0
+        - 0
+        - {}
+    name: flatten_1
+  - class_name: Multiply
+    config: {dtype: float32, name: multiply, trainable: true}
+    inbound_nodes:
+    - - - input_2
+        - 0
+        - 0
+        - &id001 {}
+      - - flatten_1
+        - 0
+        - 0
+        - *id001
+    name: multiply
+  - class_name: Sequential
+    config:
+    - class_name: Dense
+      config:
+        activation: relu
+        activity_regularizer: null
+        batch_input_shape: !!python/tuple [null, 100]
+        bias_constraint: null
+        bias_initializer:
+          class_name: Zeros
+          config: {dtype: float32}
+        bias_regularizer: null
+        dtype: float32
+        kernel_constraint: null
+        kernel_initializer:
+          class_name: VarianceScaling
+          config: {distribution: uniform, dtype: float32, mode: fan_avg, scale: 1.0,
+            seed: null}
+        kernel_regularizer: null
+        name: dense_2
+        trainable: true
+        units: 10240
+        use_bias: true
+    - class_name: Reshape
+      config:
+        dtype: float32
+        name: reshape
+        target_shape: !!python/tuple [10, 8, 128]
+        trainable: true
+    - class_name: Conv2DTranspose
+      config:
+        activation: linear
+        activity_regularizer: null
+        bias_constraint: null
+        bias_initializer:
+          class_name: Zeros
+          config: {dtype: float32}
+        bias_regularizer: null
+        data_format: channels_last
+        dilation_rate: &id002 !!python/tuple [1, 1]
+        dtype: float32
+        filters: 128
+        kernel_constraint: null
+        kernel_initializer:
+          class_name: VarianceScaling
+          config: {distribution: uniform, dtype: float32, mode: fan_avg, scale: 1.0,
+            seed: null}
+        kernel_regularizer: null
+        kernel_size: !!python/tuple [3, 3]
+        name: conv2d_transpose
+        padding: same
+        strides: !!python/tuple [2, 2]
+        trainable: true
+        use_bias: true
+    - class_name: Activation
+      config: {activation: relu, dtype: float32, name: activation, trainable: true}
+    - class_name: Conv2DTranspose
+      config:
+        activation: linear
+        activity_regularizer: null
+        bias_constraint: null
+        bias_initializer:
+          class_name: Zeros
+          config: {dtype: float32}
+        bias_regularizer: null
+        data_format: channels_last
+        dilation_rate: *id002
+        dtype: float32
+        filters: 64
+        kernel_constraint: null
+        kernel_initializer:
+          class_name: VarianceScaling
+          config: {distribution: uniform, dtype: float32, mode: fan_avg, scale: 1.0,
+            seed: null}
+        kernel_regularizer: null
+        kernel_size: !!python/tuple [3, 3]
+        name: conv2d_transpose_1
+        padding: same
+        strides: !!python/tuple [2, 2]
+        trainable: true
+        use_bias: true
+    - class_name: Activation
+      config: {activation: relu, dtype: float32, name: activation_1, trainable: true}
+    - class_name: Conv2DTranspose
+      config:
+        activation: linear
+        activity_regularizer: null
+        bias_constraint: null
+        bias_initializer:
+          class_name: Zeros
+          config: {dtype: float32}
+        bias_regularizer: null
+        data_format: channels_last
+        dilation_rate: *id002
+        dtype: float32
+        filters: 32
+        kernel_constraint: null
+        kernel_initializer:
+          class_name: VarianceScaling
+          config: {distribution: uniform, dtype: float32, mode: fan_avg, scale: 1.0,
+            seed: null}
+        kernel_regularizer: null
+        kernel_size: !!python/tuple [3, 3]
+        name: conv2d_transpose_2
+        padding: same
+        strides: !!python/tuple [2, 2]
+        trainable: true
+        use_bias: true
+    - class_name: Activation
+      config: {activation: relu, dtype: float32, name: activation_2, trainable: true}
+    - class_name: Conv2D
+      config:
+        activation: linear
+        activity_regularizer: null
+        bias_constraint: null
+        bias_initializer:
+          class_name: Zeros
+          config: {dtype: float32}
+        bias_regularizer: null
+        data_format: channels_last
+        dilation_rate: *id002
+        dtype: float32
+        filters: 3
+        kernel_constraint: null
+        kernel_initializer:
+          class_name: VarianceScaling
+          config: {distribution: uniform, dtype: float32, mode: fan_avg, scale: 1.0,
+            seed: null}
+        kernel_regularizer: null
+        kernel_size: !!python/tuple [3, 3]
+        name: conv2d_8
+        padding: same
+        strides: !!python/tuple [1, 1]
+        trainable: true
+        use_bias: true
+    - class_name: Activation
+      config: {activation: tanh, dtype: float32, name: activation_3, trainable: true}
+    inbound_nodes:
+    - - - multiply
+        - 0
+        - 0
+        - {}
+    name: sequential_1
+  name: model_1
+  output_layers:
+  - [sequential_1, 1, 0]
+keras_version: 2.1.6-tf

@@ -1,0 +1,5 @@
+Generator param : 1275147
+Discriminator param : 324243
+Total Epochs : 100
+Total time : 17:12:31
+Time per epoch : 00:24:43
